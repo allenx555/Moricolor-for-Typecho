@@ -7,6 +7,62 @@
     <!-- <script src="<?php $this->options->themeUrl('js/vendor/video.js'); ?>"></script> -->
     <script src="<?php $this->options->themeUrl('js/flat-ui.min.js'); ?>"></script>
     <script src="<?php $this->options->themeUrl('js/prism.js'); ?>"></script>
+    <script src="https://cdn.bootcss.com/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+    <script>
+      $(document).pjax('a[href^="<?php Helper::options()->siteUrl()?>"]:not(a[target="_blank"], a[no-pjax])', {
+        container: '#pjax-container',
+        fragment: '#pjax-container',
+        timeout: 8000
+      })
+    </script>
+    <script>
+      $(document).on('pjax:send',
+        function() {
+          $('#loader-wrapper').addClass("in");
+      })
+
+      $(document).on('pjax:complete',
+        function() {
+          $('#loader-wrapper').removeClass("in");
+          $(document).ready(function() {
+        $("#main-index").fadeIn(800);
+        $("#main-archive").fadeIn(800);
+        $("#main-post").fadeIn(500);
+        $("#postnav").fadeIn(800);
+        $("#main-page").fadeIn(500);
+        $("#pagenav").fadeIn(800);
+        $("#bottomtools").fadeIn(1200);
+        if (window.location.hash!='') {
+          var i=window.location.hash.indexOf('#comment');
+          var ii=window.location.hash.indexOf('#respond-post');
+          if (i != '-1' || ii != '-1') {
+            $("#comments").fadeIn(1000);
+          }
+        }
+        $("#thatsi").fadeIn(1300); 
+        $("#footer").css('display','block'); 
+        <?php if($this->is('post')): ?>
+        // 锚点平滑滚动
+        $('a[href*=#],area[href*=#]').click(function() {
+            $body = (window.opera) ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body'); //Opera BUG fixed
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname && location.search == this.search) {
+                var $target = $(this.hash);
+                $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
+                if ($target.length) {
+                    var targetOffset = $target.offset().top;
+                    $('html,body').animate({
+                        scrollTop: targetOffset
+                    },
+                    1000);
+                    return false;
+                }
+            }
+        });
+        // end
+        <?php endif; ?>
+      });
+      })
+    </script>
     <script type="text/javascript">
       function getHitokoto() {
         hitokoto=$.ajax({url:"https://api.imjad.cn/hitokoto/",async:false});
@@ -113,4 +169,4 @@
     </div>
   </footer>
 <?php $this->footer(); ?>
-</body></html>
+</div></body></html>

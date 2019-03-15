@@ -53,7 +53,8 @@
   <body>
   <header>
   <?php if (!$this->is('post')): ?>
-    <div class="container" id="main">
+    <div id="pjax-container">
+      <div class="container" id="main">
         <a id="logo" href="<?php $this->options->siteUrl(); ?>">
           <?php if ($this->options->logoUrl): ?>
             <img src="<?php $this->options->logoUrl() ?>" alt="<?php $this->options->title() ?>" />
@@ -62,7 +63,7 @@
         </a>
         <p class="description"><?php $this->options->description() ?></p>
         <hr>
-    </div>
+      </div>
   <?php endif; ?>
 
   </header>
